@@ -1,4 +1,6 @@
 import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 class UserSessionAggregator:
     def __init__(self, df):
@@ -164,3 +166,93 @@ class MetricsAnalyzer:
         )
         return {"metrics": metrics, "explanation": explanation}
 
+
+
+class DispersionAnalyzer:
+    def __init__(self, df):
+        """
+        Initialize with the DataFrame.
+        
+        Parameters:
+        df (pd.DataFrame): The input DataFrame for analysis.
+        """
+        self.df = df.select_dtypes(include='number')  # Keep only numeric columns
+
+    def compute_dispersion(self):
+        """
+        Compute dispersion parameters for each quantitative variable.
+        
+        Returns:
+        pd.DataFrame: Dispersion metrics for each numeric column.
+        """
+        dispersion_metrics = {
+            "Variable": self.df.columns,
+            "Range": self.df.max() - self.df.min(),
+            "IQR": self.df.quantile(0.75) - self.df.quantile(0.25),
+            "Variance": self.df.var(),
+            "Standard Deviation": self.df.std(),
+        }
+        
+        return pd.DataFrame(dispersion_metrics).set_index("Variable")
+
+    def interpret_dispersion(self, metrics_df):
+        """
+        Provide interpretation for the dispersion metrics.
+        
+        Parameters:
+        metrics_df (pd.DataFrame): Dispersion metrics DataFrame.
+        
+        Returns:
+        str: Interpretation summary.
+        """
+        interpretation = (
+            "The range indicates the spread between the smallest and largest values for each variable. "
+            "A large range suggests a wide variation in values. The interquartile range (IQR) focuses on the middle 50% of data, "
+            "helping identify the spread while minimizing the influence of outliers. Variance and standard deviation measure the "
+            "overall spread around the mean, with higher values indicating greater variability. The mean absolute deviation provides "
+            "a simpler measure of average deviation from the mean, less influenced by extreme values."
+        )
+        return interpretation
+
+
+
+class PCAAnalyzer:
+    def __init__(self, df):
+        """
+        Initialize with the DataFrame.
+        
+        Parameters:
+        df (pd.DataFrame): The input DataFrame.
+        """
+        self.df = df
+
+    def perform_pca(self, columns, n_components=2):
+        """
+        Perform PCA on the specified columns.
+        
+        Parameters:
+        columns (list): List of column names for PCA.
+        n_components (int): Number of principal components to retain.
+        
+        Returns:
+        pd.DataFrame: DataFrame with principal components.
+        """
+        # Standardize the data
+        scaler = StandardScaler()
+        scaled_data = scaler.fit_transform(self.df[columns])
+
+        # Perform PCA
+        pca = PCA(n_components=n_components)
+        pca_components = pca.fit_transform(scaled_data)
+
+        # Create a DataFrame for principal components
+        pca_df = pd.DataFrame(
+            pca_components,
+            columns=[f"PC{i+1}" for i in range(n_components)]
+        )
+        
+        explained_variance = pca.explained_variance_ratio_
+        print(f"Explained Variance Ratios: {explained_variance}")
+        print(f"Total Explained Variance: {sum(explained_variance):.2f}")
+        
+        return pca_df

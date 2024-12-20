@@ -18,7 +18,7 @@ class DropNullRows:
         :param df: The DataFrame to operate on.
         :return: A new DataFrame with rows dropped where the specified columns have null values.
         """
-        print(f"Sucessfuly dropped null columns from {self.columns_to_check}")
+        print(f"Sucessfuly dropped null rows from {self.columns_to_check}")
         return df.dropna(subset=self.columns_to_check)
         
 
