@@ -2,6 +2,20 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
+class DropUndefined:
+    def __init__(self, df):
+
+        '''
+        deletes rows if the conditions matched
+        '''
+        self.df = df
+    def DeleteUndefined(self, column='Handset Type', value = 'undefined'):
+        self.df.drop(self.df[self.df[column] == value].index, inplace=True)
+        
+        print(F"Sucessfully droped {value} columns")
+        return self.df
+
+
 class UserSessionAggregator:
     def __init__(self, df):
         """
@@ -256,3 +270,102 @@ class PCAAnalyzer:
         print(f"Total Explained Variance: {sum(explained_variance):.2f}")
         
         return pca_df
+
+
+
+class HandsetAnalysis:
+    def __init__(self, df: pd.DataFrame):
+        """
+        Initializes the class with a DataFrame.
+
+        Parameters:
+        df (pd.DataFrame): The input DataFrame.
+        """
+        self.df = df
+
+    def validate_column(self, column_name: str):
+        """
+        Validates that the specified column exists in the DataFrame.
+
+        Parameters:
+        column_name (str): The name of the column to validate.
+
+        Raises:
+        ValueError: If the column does not exist in the DataFrame.
+        """
+        if column_name not in self.df.columns:
+            raise ValueError(f"Column '{column_name}' not found in the DataFrame.")
+
+    def get_top_n(self, column_name: str, top_n: int = 10):
+        """
+        Identifies the top N items in the specified column.
+
+        Parameters:
+        column_name (str): The column to analyze.
+        top_n (int): The number of top items to retrieve.
+
+        Returns:
+        pd.DataFrame: A DataFrame with the top N items and their counts.
+        """
+        self.validate_column(column_name)
+        top_items = (
+            self.df[column_name]
+            .value_counts()
+            .head(top_n)
+            .reset_index()
+        )
+        top_items.columns = [column_name, 'Count']
+        return top_items
+
+    def get_top_n_per_top_k_groups(self, group_column: str, target_column: str, top_n: int = 5, top_k: int = 3):
+        """
+        Identifies the top N items in the target column for each of the top K groups in the group column.
+
+        Parameters:
+        group_column (str): The column to group by.
+        target_column (str): The column to find the top items in for each group.
+        top_n (int): The number of top items to retrieve per group.
+        top_k (int): The number of top groups to consider.
+
+        Returns:
+        pd.DataFrame: A DataFrame with the top N items per group and their counts.
+        """
+        self.validate_column(group_column)
+        self.validate_column(target_column)
+
+        # Get top K manufacturers based on the count of handsets
+        top_k_manufacturers = self.df[group_column].value_counts().head(top_k).index.tolist()
+
+        # Filter the DataFrame to include only the top K manufacturers
+        filtered_df = self.df[self.df[group_column].isin(top_k_manufacturers)]
+
+        # Group by the group_column, calculate value counts within each group, and keep only the top_n
+        top_items_per_group = (
+            filtered_df.groupby(group_column)[target_column]
+            .apply(lambda x: x.value_counts().head(top_n))
+            .reset_index(name='Count')
+        )
+        return top_items_per_group
+
+# Example Usage
+'''
+
+    analyzer = HandsetAnalysis(data)
+
+    # Task 1: Identify the top 10 handsets
+    print("Top 10 Handsets:")
+    top_10_handsets = analyzer.get_top_n('Handset Type', 10)
+    print(top_10_handsets)
+
+    # Task 2: Identify the top 3 handset manufacturers
+    print("\nTop 3 Handset Manufacturers:")
+    top_3_manufacturers = analyzer.get_top_n('Manufacturer', 3)
+    print(top_3_manufacturers)
+
+    # Task 3: Identify the top 5 handsets per top 3 manufacturers
+    print("\nTop 5 Handsets Per Top 3 Manufacturers:")
+    top_5_per_manufacturer = analyzer.get_top_n_per_group('Manufacturer', 'Handset Type', 5)
+    print(top_5_per_manufacturer)
+
+'''
+
