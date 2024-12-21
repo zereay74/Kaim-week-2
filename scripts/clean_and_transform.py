@@ -2,6 +2,21 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
+
+class DropUndefined:
+    def __init__(self, df):
+
+        '''
+        deletes rows if the conditions matched
+        '''
+        self.df = df
+    def DeleteUndefined(self, column='Handset Type', value = 'undefined'):
+        self.df.drop(self.df[self.df[column] == value].index, inplace=True)
+        
+        print(F"Sucessfully droped {value} columns")
+        return self.df
+
+
 class DropNullRows:
     def __init__(self, columns_to_check):
         """
