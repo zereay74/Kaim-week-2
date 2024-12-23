@@ -114,8 +114,7 @@ class TelecomEngagementAnalysis:
             top_users_per_app[app] = top_users
 
         return top_users_per_app
-    
-class TelecomEngagementAnalysis_2:
+    ''' 
     def aggregate_metrics(self):
         """
         Aggregate the engagement metrics per customer ID (MSISDN).
@@ -139,6 +138,7 @@ class TelecomEngagementAnalysis_2:
             dataframe (pd.DataFrame): Cleaned and prepared dataframe.
         """
         self.data = dataframe
+        '''
     def plot_top_applications(self):
         """
         Plot the top 3 most used applications using appropriate charts.
