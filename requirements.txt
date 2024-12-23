@@ -4,3 +4,7 @@ streamlit
 matplotlib
 seaborn
 plotly
+scikit-learn
+sqlalchemy 
+psycopg2
+python-dotenv
