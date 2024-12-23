@@ -1,143 +1,101 @@
-# Task Overview: Telecommunication Data Analysis
+# Telecom Data Analysis Tasks
 
-## Project Description
-This project focuses on analyzing telecommunication user data to extract meaningful insights through data preprocessing, exploratory data analysis (EDA), and statistical techniques. The implementation follows a modular object-oriented programming (OOP) approach.
-
----
-
-## Tasks Completed
-
-### 1. Load Data and Preprocess
-- **Objective**: Load the dataset and clean it by handling missing values and outliers.
-- **Process**:
-  - Loaded data from the source file.
-  - Applied transformations to handle missing or erroneous values.
-  - Ensured consistent data types for analysis.
-
-**Script Used**: `data_loader.py`, `clean_and_transform.py`
+## Overview
+This repository contains scripts and notebooks for analyzing telecom user data. Tasks include exploratory data analysis (EDA), user engagement analysis, and experience and satisfaction analytics. The project follows a modular object-oriented programming (OOP) approach.
 
 ---
 
-### 2. Identify the Top 10 Handsets
-- **Objective**: Identify the 10 most used handsets among users.
-- **Process**:
-  - Aggregated data based on the `Handset Type` column.
-  - Counted occurrences to determine popularity.
+## Task Highlights
 
-**Script Used**: `analysis_1.py`
+### Task 1: Telecommunication EDA
+- **Goals**:
+  - Preprocess and clean data.
+  - Analyze user-level and session-level metrics.
+  - Identify popular handsets and manufacturers.
+  - Perform segmentation and dimensionality reduction.
 
----
+- **Key Outputs**:
+  - Top 10 handsets and top 3 manufacturers.
+  - Aggregated user metrics (session count, duration, total traffic).
+  - Correlation matrix and PCA results.
+  - Visualizations (e.g., histograms, boxplots).
 
-### 3. Identify the Top 3 Handset Manufacturers
-- **Objective**: Identify the manufacturers producing the most popular handsets.
-- **Process**:
-  - Grouped data by `Handset Manufacturer`.
-  - Counted occurrences to rank manufacturers.
-
-**Script Used**: `analysis_1.py`
-
----
-
-### 4. Aggregations and Key Variables
-- **Objective**: Aggregate session-level data to create user-level metrics.
-- **Key Variables**:
-  - **IMSI**: Unique user identifier.
-  - **xDR Sessions**: Total number of data sessions per user.
-  - **Total Session Duration**: Summed session durations per user.
-  - **Application-Specific Data**: Total data for Social Media, Google, YouTube, etc.
-
-**Notebook Used**: `Task 1 Overview and EDA.ipynb`
-
-**Script Used**: `clean_and_transform.py`, `analysis_1.py`
+**Scripts**:  
+`data_loader.py`, `clean_and_transform.py`, `analysis_1.py`, 'analysis_2.py', `visualization.py`   
 
 ---
 
-### 5. Variable Description and Segmentation
-- **Objective**: 
-  - Provide detailed descriptions for each variable.
-  - Segment users into deciles based on total session duration.
-- **Process**:
-  - Created descriptive summaries of variables.
-  - Applied decile segmentation using `pd.qcut`.
+### Task 2: User Engagement Analysis
+- **Goals**:
+  - Aggregate engagement metrics (session count, duration, traffic).
+  - Cluster users into groups using K-Means.
+  - Analyze application-specific traffic.
 
-**Script Used**: `clean_and_transform.py`
+- **Key Outputs**:
+  - Top 10 users by engagement metrics.
+  - Clusters of light, average, and heavy users.
+  - Top 3 most used applications.
 
----
-
-### 6. Metrics and Graphical Analysis
-- **Objective**: Compute descriptive statistics and visualize distributions.
-- **Process**:
-  - Analyzed central tendencies (mean, median) and dispersion (std, range).
-  - Created visualizations such as histograms, boxplots, and scatter plots.
-
-**Script Used**: `analysis_1.py`, `visualization.py`
+**Key Methods**:  
+`aggregate_metrics()`, `normalize_and_cluster()`, `traffic_by_application()`  
 
 ---
 
-### 7. Univariate and Bivariate Analysis
-- **Objective**: 
-  - Conduct univariate analysis to understand individual variable behavior.
-  - Perform bivariate analysis to explore relationships between variables.
-- **Key Activities**:
-  - Computed measures of central tendency and dispersion.
-  - Analyzed relationships between application data and total DL+UL data.
+### Task 3 & 4: Experience and Satisfaction Analytics
+- **Goals**:
+  - Rank top 10 users by experience and satisfaction scores.
+  - Export insights for database integration.
+  - Analyze network performance and usage patterns.
 
-**Script Used**: `analysis_1.py`, `visualization.py`
+- **Key Outputs**:
+  - Top 10 users based on experience and satisfaction.
+  - Database-ready tuples for exporting user insights.
+  - Visualizations for RTT, throughput, and application usage.
+
+### Streamlit app 
+  - for visualization and diplaying plots
+  - the app have the above 3 task pages in separat
+  - for each task the app will display a data frame and it plots by choosing rows, columns.... 
+---
+
+## Results
+1. **EDA**:
+   - Top handsets and manufacturers identified.
+   - Strong correlations between video-streaming applications.
+   - PCA explained 71% of variance in top two components.
+
+2. **User Engagement**:
+   - Clustering revealed distinct user behavior patterns.
+   - Top 3 applications: YouTube, Social Media, Google.
+
+3. **Experience & Satisfaction**:
+   - Top-performing users analyzed for database insertion.
+   - Error-handling mechanisms implemented for robust analytics.
+4. **Custom Visualization on Streamlit app**:
+| | - selected dataframes from the tasks
+| | - visualizations by choosing plot type, row, column..... 
 
 ---
 
-### 8. Correlation Analysis
-- **Objective**: Compute and interpret the correlation matrix for application-specific data.
-- **Key Insights**:
-  - Strong correlations observed between video-streaming applications like YouTube and Netflix.
-  - Weak correlations for niche categories like Gaming Data.
+## How to Run
+1. Clone the repository:
+2. cd to notebooks folder and run the notebooks
+3. for futher analysis and customization the scripts are located in /scripts folder
 
-**Script Used**: `analysis_1.py`
-
----
-
-### 9. Dimensionality Reduction
-- **Objective**: Reduce data dimensions using PCA while retaining critical information.
-- **Key Findings**:
-  - Principal Component 1 explained 63.37% of the variance.
-  - Combined variance explained by the first two components was 71%.
-
-**Script Used**: `analysis_1.py`
-
----
-
-## Repository Structure
-```
+## repo structure
 Kaim week 2/
 ├── notebooks/
-│   └── Task 1 Overview and EDA.ipynb
+│   ├── Task_1_Overview_and_EDA.ipynb
+│   ├── Task_2_User_Engagement_analysis.ipynb
+│   └── Task_3_and_4_Experience_Satisfaction_anlalysis.ipynb
 ├── scripts/
 │   ├── data_loader.py
 │   ├── clean_and_transform.py
 │   ├── analysis_1.py
+|   ├── analysis_2.py
 │   └── visualization.py
-├──...
-│  
-└── README.md
-```
+├── README.md
+├── requirements.txt
+| 
+└── streamlit_app.py
 
----
-
-## How to Run the Project
-1. Clone the repository.
-2. Ensure required Python libraries are installed.
-3. Run the `Task 1 Overview and EDA.ipynb` notebook to reproduce results.
-4. Explore individual scripts in the `scripts/` folder for specific functionalities.
-
----
-
-## Key Insights
-- Modular programming enables scalable and reusable code.
-- Aggregation and segmentation reveal diverse user behaviors.
-- Correlation and PCA provide actionable insights for feature selection and dimensionality reduction.
-
----
-
-## Future Work
-- Extend the analysis to include time-series trends.
-- Apply clustering techniques to segment users based on behavior.
