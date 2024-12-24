@@ -10,3 +10,4 @@ python-dotenv
 nbimporter
 nbformat
 IPython
+psycopg2-binary
