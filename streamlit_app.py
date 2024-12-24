@@ -73,7 +73,7 @@ if page == "User Overview Analysis":
     dataframes = {name: obj for name, obj in task1.__dict__.items() if isinstance(obj, pd.DataFrame)}
     
     plotbychoice(dataframes)
-
+''' 
 # Other pages
 elif page == "User Engagement Analysis":
     st.title("User Engagement Analysis")
@@ -89,4 +89,4 @@ elif page == "Experiance and Satisfaction Analysis":
 
     plotbychoice(dataframes)
     
-
+'''

@@ -11,7 +11,7 @@ import sys
 import pandas as pd
 
 
-# In[7]:
+# In[2]:
 
 
 current_dir = os.getcwd()
@@ -23,13 +23,7 @@ print(parent_dir)
 sys.path.insert(0,parent_dir)
 
 
-# In[ ]:
-
-
-
-
-
-# In[9]:
+# In[3]:
 
 
 from importlib import reload
@@ -40,7 +34,7 @@ reload(scripts.analysis_1)
 reload(scripts.visualization)
 
 
-# In[10]:
+# In[4]:
 
 
 from scripts.data_loader import DataLoader
@@ -51,7 +45,7 @@ from scripts.visualization import UnivariateAnalyzer, BivariateAnalyzer, Correla
 
 # #  Load data
 
-# In[11]:
+# In[14]:
 
 
 file_path = r"C:\ML and DS Files\Kifiya AI\Kaim-week-2\Week 2 data\Data\Copy of Week2_challenge_data_source(CSV).csv"
@@ -59,19 +53,19 @@ loader = DataLoader(file_path)
 data = loader.load_data()
 
 
-# In[128]:
+# In[6]:
 
 
 data.head(2)
 
 
-# In[129]:
+# In[7]:
 
 
 data.shape
 
 
-# In[13]:
+# In[8]:
 
 
 num_undefined = data['Handset Type'].isin(['undefined']).sum()
@@ -82,7 +76,7 @@ percentage_undefined = (num_undefined / len(data)) * 100
 print(f"Percentage of 'undefined' values: {percentage_undefined:.2f}%")
 
 
-# In[131]:
+# In[9]:
 
 
 # Drop  undefined values from Handset Type
@@ -90,7 +84,7 @@ drop_undefined = DropUndefined(data)
 data = drop_undefined.DeleteUndefined(column='Handset Type', value='undefined')
 
 
-# In[14]:
+# In[10]:
 
 
 num_undefined = data['Handset Type'].isin(['undefined']).sum()
@@ -101,7 +95,7 @@ percentage_undefined = (num_undefined / len(data)) * 100
 print(f"Percentage of 'undefined' values: {percentage_undefined:.2f}%")
 
 
-# In[132]:
+# In[11]:
 
 
 # drop null rows for the follwing columns
@@ -113,13 +107,13 @@ dropper = DropNullRows(columns_to_check=col_1)
 data = dropper.drop_if_null(data)
 
 
-# In[133]:
+# In[12]:
 
 
 data.shape
 
 
-# In[134]:
+# In[13]:
 
 
 null_columns = ['Avg RTT DL (ms)', 'Avg RTT UL (ms)', 'TCP DL Retrans. Vol (Bytes)', 'TCP UL Retrans. Vol (Bytes)', 
@@ -132,7 +126,7 @@ null_columns = ['Avg RTT DL (ms)', 'Avg RTT UL (ms)', 'TCP DL Retrans. Vol (Byte
 
 # #  Numerical null values are filled based on the outlier and normal distribution
 
-# In[ ]:
+# In[14]:
 
 
 # Initialize the NullValueFiller class
@@ -142,26 +136,27 @@ filler = NullValueFiller(data, null_columns)
 filler.fill_nulls()
 
 
-# In[136]:
+# In[15]:
 
 
 null_counts = data.isnull().sum()
-print(null_counts)
+print(null_counts.sum())
 
 
-# In[137]:
+# In[16]:
 
 
 data.columns
 
 
-# In[138]:
+# In[17]:
 
 
+# create an instance
 analyzer = HandsetAnalysis(data)
 
 
-# In[139]:
+# In[18]:
 
 
 # Identify the top 10 handsets
@@ -170,7 +165,13 @@ top_10_handsets = analyzer.get_top_n('Handset Type', 10)
 print(top_10_handsets)
 
 
-# In[140]:
+# In[19]:
+
+
+top_10_handsets.info()
+
+
+# In[20]:
 
 
 # Identify the top 3 handset manufacturers
@@ -179,7 +180,7 @@ top_3_manufacturers = analyzer.get_top_n('Handset Manufacturer', 3)
 print(top_3_manufacturers)
 
 
-# In[141]:
+# In[21]:
 
 
 # Identify the top 5 handsets per top 3 manufacturers
@@ -191,7 +192,7 @@ print(top_5_per_top_3_manufacturers)
 
 # ## Task 1.1  Aggrigation
 
-# In[142]:
+# In[22]:
 
 
 # Instantiate the class
@@ -204,15 +205,21 @@ aggrigated = aggregator.aggregate_per_user(user_column='IMSI')
 aggrigated.head(3)
 
 
-# In[143]:
+# In[23]:
 
 
-aggrigated.shape
+aggrigated.info()
+
+
+# In[24]:
+
+
+aggrigated.head(2)
 
 
 # #### variable discription
 
-# In[144]:
+# In[25]:
 
 
 # Describe variables
@@ -221,11 +228,15 @@ variable_description = describer.describe_variables()
 print(variable_description)
 
 
-# #### 
+# In[26]:
+
+
+variable_description.info()
+
 
 # #### Segmentation
 
-# In[145]:
+# In[27]:
 
 
 # Perform user segmentation and compute total data per decile
@@ -234,9 +245,15 @@ decile_data = transformer.segment_users()
 print(decile_data)
 
 
+# In[28]:
+
+
+decile_data.info()
+
+
 # #### Analyze basic metrics
 
-# In[146]:
+# In[29]:
 
 
 # Analyze metrics
@@ -248,7 +265,7 @@ print(basic_metrics["explanation"])
 
 # #### Dispersion analyzer
 
-# In[147]:
+# In[30]:
 
 
 # Initialize the analyzer
@@ -265,14 +282,14 @@ print("\nInterpretation:\n", interpretation)
 
 # #### Graphical analysis
 
-# In[148]:
+# In[31]:
 
 
 uni_analyzer = UnivariateAnalyzer(aggrigated)
 uni_analyzer.plot_variable(column='total_youtube_data')
 
 
-# In[149]:
+# In[32]:
 
 
 # Bivariate Analysis
@@ -282,13 +299,13 @@ bi_analyzer.plot_relationship(column_x='xdr_sessions', column_y='total_applicati
 
 # #### Correlation Analysis
 
-# In[150]:
+# In[33]:
 
 
 aggrigated.columns
 
 
-# In[151]:
+# In[34]:
 
 
 corr_columns = ['IMSI', 'xdr_sessions', 'total_session_duration', 'total_dl_data',
@@ -298,7 +315,7 @@ corr_columns = ['IMSI', 'xdr_sessions', 'total_session_duration', 'total_dl_data
        'total_application_data_volume']
 
 
-# In[152]:
+# In[35]:
 
 
 # Correlation Analysis
@@ -309,7 +326,7 @@ corr_analyzer.plot_correlation_heatmap(correlation_matrix)
 
 # #### Principal component analysis
 
-# In[153]:
+# In[36]:
 
 
 # PCA
