@@ -9,3 +9,4 @@ sqlalchemy
 python-dotenv
 nbimporter
 nbformat
+IPython
