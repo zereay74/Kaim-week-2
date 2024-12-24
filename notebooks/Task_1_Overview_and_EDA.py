@@ -45,18 +45,18 @@ from scripts.visualization import UnivariateAnalyzer, BivariateAnalyzer, Correla
 
 # #  Load data
 
-# In[14]:
+# In[9]:
 
 
-file_path = r"C:\ML and DS Files\Kifiya AI\Kaim-week-2\Week 2 data\Data\Copy of Week2_challenge_data_source(CSV).csv"
+file_path = "../Week 2 data/Data/Copy of Week2_challenge_data_source(CSV).csv"
 loader = DataLoader(file_path)
 data = loader.load_data()
 
 
-# In[6]:
+# In[ ]:
 
 
-data.head(2)
+#data.head(2)
 
 
 # In[7]:
@@ -202,7 +202,7 @@ aggregator = UserSessionAggregator(data)
 aggrigated = aggregator.aggregate_per_user(user_column='IMSI')
 
 # View results
-aggrigated.head(3)
+# aggrigated.head(3)
 
 
 # In[23]:
@@ -214,7 +214,7 @@ aggrigated.info()
 # In[24]:
 
 
-aggrigated.head(2)
+#aggrigated.head(2)
 
 
 # #### variable discription
